@@ -120,7 +120,7 @@ class Repository(object):
         self.git_repo = pygit2.Repository(path)
         self.remotes = RemoteCollection(self.git_repo.remotes, self)
         self.path = self.git_repo.path
-        self.root = self.path[:-6]  # strip trailing /.git/
+        self.root = self.git_repo.workdir
         self.config = self.git_repo.config
 
     @property
