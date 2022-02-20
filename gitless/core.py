@@ -125,7 +125,13 @@ class Repository(object):
 
     @property
     def cwd(self):
-        ret = os.path.relpath(os.getcwd(), self.root)
+        try:
+            cwd = os.getcwd()
+        except FileNotFoundError:
+            os.chdir(self.root)
+            cwd = self.root
+
+        ret = os.path.relpath(cwd, self.root)
         return '' if ret == '.' else ret
 
     def revparse_single(self, revision):
@@ -401,6 +407,7 @@ class Repository(object):
                 # Restore assumed unchanged info
                 restore_au_info()
 
+        os.chdir(self.root)  # The current directory may not exist on new branch
         save(self.current_branch)
         git_repo.checkout(dst_b.git_branch)
         restore(dst_b)
