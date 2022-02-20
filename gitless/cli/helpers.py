@@ -85,11 +85,14 @@ def page(fp, repo):
     cmd = shlex.split(pager)  # split into constituents
     if os.path.basename(cmd[0]) == 'less':
         cmd.extend(['-r', '-f'])  # append arguments
+    with open(fp, "rb") as f:
+        data = f.read()
 
-    cmd.append(fp)  # add file name to page command
     try:
-        ret = subprocess.call(cmd, stdin=sys.stdin, stdout=sys.stdout)
-        if ret != 0:
+        p = subprocess.Popen(cmd, stdout=sys.stdout, stdin=subprocess.PIPE, stderr=sys.stderr)
+        stdout_data, stderr_data = p.communicate(input=data)
+
+        if p.returncode != 0:
             pprint.err('Call to pager {0} failed'.format(pager))
     except OSError:
         pprint.err('Couldn\'t launch pager {0}'.format(pager))
