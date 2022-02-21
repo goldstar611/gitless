@@ -7,18 +7,16 @@
 import collections
 import errno
 import io
-
 import itertools
 import json
-from locale import getpreferredencoding
 import os
 import re
 import shutil
 import sys
+from locale import getpreferredencoding
+from subprocess import run, CalledProcessError
 
 import pygit2
-
-from subprocess import run, CalledProcessError
 
 ENCODING = getpreferredencoding() or 'utf-8'
 
