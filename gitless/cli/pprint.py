@@ -150,16 +150,6 @@ def conf_dialog(text):
 
 
 def get_user_input(text='> '):
-    """Python 2/3 compatible way of getting user input."""
-    global input
-    try:
-        # Disable pylint's redefined-builtin warning and undefined-variable
-        # (raw_input is undefined in python 3) error.
-        # pylint: disable=W0622
-        # pylint: disable=E0602
-        input = raw_input
-    except NameError:
-        pass
     return input(text)
 
 
