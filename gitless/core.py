@@ -70,7 +70,7 @@ def init_repository(url=None, only=None, exclude=None):
     except KeyError:  # Expected
         if not url:
             repo = pygit2.init_repository(cwd)
-            # We also create an initial root commit
+            # Create an initial root commit to prevent errors later
             git('commit', '--allow-empty', '-m', 'Initialize repository')
             return repo
 
@@ -219,7 +219,15 @@ class Repository(object):
         if self.git_repo.head_is_detached:
             b = self.git_repo.lookup_reference('GL_FUSE_ORIG_HEAD').resolve()
         else:
-            b = self.git_repo.head
+            try:
+                b = self.git_repo.head
+            except pygit2.GitError as e:
+                if 'reference \'refs/heads/master\' not found' in '{0}'.format(e):
+                    git('commit', '--allow-empty', '-m', 'Initialize repository')
+                    b = self.git_repo.head
+                else:
+                    raise
+
         return self.lookup_branch(b.shorthand)
 
     def create_branch(self, name, head):
