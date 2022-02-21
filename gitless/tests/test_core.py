@@ -23,6 +23,8 @@ UNTRACKED_FP_CONTENTS = 'f2'
 UNTRACKED_FP_WITH_SPACE = 'f2 space'
 IGNORED_FP = 'f3'
 IGNORED_FP_WITH_SPACE = 'f3 space'
+DELETED_TRACKED_FP = 'f4'
+DELETED_TRACKED_FP_CONTENTS = 'this file will be git added and then filesystem removed\n'
 NONEXISTENT_FP = 'nonexistent'
 NONEXISTENT_FP_WITH_SPACE = 'nonexistent space'
 GITIGNORE_FP = '.gitignore'
@@ -288,6 +290,15 @@ class TestFileTrack(TestFile):
     def test_track_gitignore(self):
         self.__assert_track_untracked(GITIGNORE_FP)
 
+    def test_delete_tracked(self):
+        utils_lib.write_file(DELETED_TRACKED_FP, contents=DELETED_TRACKED_FP_CONTENTS)
+        utils_lib.git(
+            'add',
+            DELETED_TRACKED_FP,)
+        os.remove(DELETED_TRACKED_FP)
+        # status_file() should not raise KeyError(513)
+        self.curr_b.status_file(DELETED_TRACKED_FP)
+
 
 class TestFileUntrack(TestFile):
 
@@ -516,7 +527,8 @@ class TestFileStatus(TestFile):
         self.assertTrue(st.modified)
 
         os.remove(UNTRACKED_FP)
-        self.assertRaises(KeyError, self.curr_b.status_file, UNTRACKED_FP)
+        # status_file() should not raise KeyError(513)
+        self.curr_b.status_file(UNTRACKED_FP)
 
     def test_status_track_untrack(self):
         self.curr_b.track_file(UNTRACKED_FP)

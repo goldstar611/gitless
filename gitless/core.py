@@ -774,6 +774,8 @@ class Branch(object):
         # `git rm` and then created file with same name).
         pygit2.GIT_STATUS_WT_NEW | pygit2.GIT_STATUS_INDEX_DELETED: (
             GL_STATUS_TRACKED, True, True, True, False),
+        pygit2.GIT_STATUS_INDEX_NEW | pygit2.GIT_STATUS_WT_DELETED: (
+            GL_STATUS_TRACKED, True, False, True, False),
 
         ### WT_MODIFIED | INDEX_* ###
         pygit2.GIT_STATUS_WT_MODIFIED | pygit2.GIT_STATUS_INDEX_NEW: (
