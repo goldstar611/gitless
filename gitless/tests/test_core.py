@@ -76,7 +76,8 @@ class TestCore(utils_lib.TestBase):
 
     def setUp(self):
         super(TestCore, self).setUp('gl-core-test')
-        utils_lib.git('init')
+        init_msg = utils_lib.git('init')
+        self.assertIn("Initialized empty Git repository", init_msg)
         utils_lib.set_test_config()
         self.repo = core.Repository()
 
