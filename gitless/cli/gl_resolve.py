@@ -4,8 +4,6 @@
 
 """gl resolve - Mark a file with conflicts as resolved."""
 
-
 from . import file_cmd
-
 
 parser = file_cmd.parser('mark files with conflicts as resolved', 'resolve', ['rs'])

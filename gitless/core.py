@@ -797,8 +797,11 @@ class Branch(object):
         Ignored and tracked unmodified files are not reported.
         File paths are always relative to the repo root.
         """
-        for fp, git_s in self.gl_repo.git_repo.status().items():
-            yield self.FileStatus(fp, *self._st_map[git_s])
+        try:
+            for fp, git_s in self.gl_repo.git_repo.status().items():
+                yield self.FileStatus(fp, *self._st_map[git_s])
+        except KeyError as e:
+            raise
 
         # status doesn't report au files
         au_files = list(self._au_files())

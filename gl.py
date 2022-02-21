@@ -9,6 +9,5 @@ import sys
 
 from gitless.cli import gl
 
-
 if __name__ == '__main__':
-  sys.exit(gl.main())
+    sys.exit(gl.main())

@@ -4,8 +4,6 @@
 
 """gl track - Start tracking changes to files."""
 
-
 from . import file_cmd
-
 
 parser = file_cmd.parser('start tracking changes to files', 'track', ['tr'])

@@ -4,7 +4,6 @@
 
 """gl commit - Record changes in the local repository."""
 
-
 from gitless import core
 
 from . import commit_dialog
@@ -12,124 +11,124 @@ from . import helpers, pprint
 
 
 def parser(subparsers, repo):
-  """Adds the commit parser to the given subparsers object."""
-  desc = 'save changes to the local repository'
-  commit_parser = subparsers.add_parser(
-      'commit', help=desc, description=(
-        desc.capitalize() + '. ' +
-        'By default all tracked modified files are committed. To customize the'
-        ' set of files to be committed use the only, exclude, and include '
-        'flags'), aliases=['ci'])
-  commit_parser.add_argument(
-      '-m', '--message', help='Commit message', dest='m')
-  commit_parser.add_argument(
-      '-p', '--partial',
-      help='Interactively select segments of files to commit', dest='p',
-      action='store_true')
-  helpers.oei_flags(commit_parser, repo)
-  commit_parser.set_defaults(func=main)
+    """Adds the commit parser to the given subparsers object."""
+    desc = 'save changes to the local repository'
+    commit_parser = subparsers.add_parser(
+        'commit', help=desc, description=(
+                desc.capitalize() + '. ' +
+                'By default all tracked modified files are committed. To customize the'
+                ' set of files to be committed use the only, exclude, and include '
+                'flags'), aliases=['ci'])
+    commit_parser.add_argument(
+        '-m', '--message', help='Commit message', dest='m')
+    commit_parser.add_argument(
+        '-p', '--partial',
+        help='Interactively select segments of files to commit', dest='p',
+        action='store_true')
+    helpers.oei_flags(commit_parser, repo)
+    commit_parser.set_defaults(func=main)
 
 
 def main(args, repo):
-  commit_files = helpers.oei_fs(args, repo)
+    commit_files = helpers.oei_fs(args, repo)
 
-  if not commit_files:
-    pprint.err('No files to commit')
-    pprint.err_exp('use gl track f if you want to track changes to file f')
-    return False
+    if not commit_files:
+        pprint.err('No files to commit')
+        pprint.err_exp('use gl track f if you want to track changes to file f')
+        return False
 
-  curr_b = repo.current_branch
-  total_additions = 0
-  total_deletions = 0
-  for fp in commit_files:
-      try:
-        patch = curr_b.diff_file(fp)
-      except KeyError:
-        continue
+    curr_b = repo.current_branch
+    total_additions = 0
+    total_deletions = 0
+    for fp in commit_files:
+        try:
+            patch = curr_b.diff_file(fp)
+        except KeyError:
+            continue
 
-      if patch.delta.is_binary:
-        continue
+        if patch.delta.is_binary:
+            continue
 
-      total_additions += patch.line_stats[1]
-      total_deletions += patch.line_stats[2]
+        total_additions += patch.line_stats[1]
+        total_deletions += patch.line_stats[2]
 
-  partials = None
-  if args.p:
-    partials = _do_partial_selection(commit_files, curr_b)
+    partials = None
+    if args.p:
+        partials = _do_partial_selection(commit_files, curr_b)
 
-  if not _author_info_is_ok(repo):
-    return False
+    if not _author_info_is_ok(repo):
+        return False
 
-  msg = args.m if args.m else commit_dialog.show(commit_files, repo)
-  if not msg.strip():
-    if partials:
-      core.git('reset', 'HEAD', partials)
-    raise ValueError('Missing commit message')
+    msg = args.m if args.m else commit_dialog.show(commit_files, repo)
+    if not msg.strip():
+        if partials:
+            core.git('reset', 'HEAD', partials)
+        raise ValueError('Missing commit message')
 
-  _auto_track(commit_files, curr_b)
-  ci = curr_b.create_commit(commit_files, msg, partials=partials)
-  pprint.ok('Commit on branch {0} succeeded'.format(repo.current_branch))
+    _auto_track(commit_files, curr_b)
+    ci = curr_b.create_commit(commit_files, msg, partials=partials)
+    pprint.ok('Commit on branch {0} succeeded'.format(repo.current_branch))
 
-  pprint.blank()
-  pprint.commit(ci, line_additions=total_additions, line_deletions=total_deletions)
+    pprint.blank()
+    pprint.commit(ci, line_additions=total_additions, line_deletions=total_deletions)
 
-  if curr_b.fuse_in_progress:
-    _op_continue(curr_b.fuse_continue, 'Fuse')
-  elif curr_b.merge_in_progress:
-    _op_continue(curr_b.merge_continue, 'Merge')
+    if curr_b.fuse_in_progress:
+        _op_continue(curr_b.fuse_continue, 'Fuse')
+    elif curr_b.merge_in_progress:
+        _op_continue(curr_b.merge_continue, 'Merge')
 
-  return True
+    return True
 
 
 def _author_info_is_ok(repo):
-  def show_config_error(key):
-    pprint.err('Missing {0} for commit author'.format(key))
-    pprint.err_exp('change the value of git\'s user.{0} setting'.format(key))
+    def show_config_error(key):
+        pprint.err('Missing {0} for commit author'.format(key))
+        pprint.err_exp('change the value of git\'s user.{0} setting'.format(key))
 
-  def config_is_ok(key):
-    try:
-      if not repo.config['user.{0}'.format(key)]:
-        show_config_error(key)
-        return False
-    except KeyError:
-      show_config_error(key)
-      return False
-    return True
+    def config_is_ok(key):
+        try:
+            if not repo.config['user.{0}'.format(key)]:
+                show_config_error(key)
+                return False
+        except KeyError:
+            show_config_error(key)
+            return False
+        return True
 
-  return config_is_ok('name') and config_is_ok('email')
+    return config_is_ok('name') and config_is_ok('email')
 
 
 def _do_partial_selection(files, curr_b):
-  partials = []
-  for fp in files:
-    f_st = curr_b.status_file(fp)
-    if not f_st.exists_at_head:
-      pprint.warn('Can\'t select segments for new file {0}'.format(fp))
-      continue
-    if not f_st.exists_in_wd:
-      pprint.warn('Can\'t select segments for deleted file {0}'.format(fp))
-      continue
+    partials = []
+    for fp in files:
+        f_st = curr_b.status_file(fp)
+        if not f_st.exists_at_head:
+            pprint.warn('Can\'t select segments for new file {0}'.format(fp))
+            continue
+        if not f_st.exists_in_wd:
+            pprint.warn('Can\'t select segments for deleted file {0}'.format(fp))
+            continue
 
-    core.git('add', '-p', fp)
-    # TODO: check that at least one hunk was staged
-    partials.append(fp)
+        core.git('add', '-p', fp)
+        # TODO: check that at least one hunk was staged
+        partials.append(fp)
 
-  return partials
+    return partials
 
 
 def _auto_track(files, curr_b):
-  """Tracks those untracked files in the list."""
-  for fp in files:
-    f = curr_b.status_file(fp)
-    if f.type == core.GL_STATUS_UNTRACKED:
-      curr_b.track_file(f.fp)
+    """Tracks those untracked files in the list."""
+    for fp in files:
+        f = curr_b.status_file(fp)
+        if f.type == core.GL_STATUS_UNTRACKED:
+            curr_b.track_file(f.fp)
 
 
 def _op_continue(op, fn):
-  pprint.blank()
-  try:
-    op(op_cb=pprint.OP_CB)
-    pprint.ok('{0} succeeded'.format(fn))
-  except core.ApplyFailedError as e:
-    pprint.ok('{0} succeeded'.format(fn))
-    raise e
+    pprint.blank()
+    try:
+        op(op_cb=pprint.OP_CB)
+        pprint.ok('{0} succeeded'.format(fn))
+    except core.ApplyFailedError as e:
+        pprint.ok('{0} succeeded'.format(fn))
+        raise e
