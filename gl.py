@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Gitless - a version control system built on top of Git
 # Licensed under MIT
