@@ -1039,6 +1039,16 @@ class TestRemoteDelete(TestRemote):
         self.assertRaises(KeyError, self.remotes.delete, 'remote')
 
 
+class TestRemoteUpdate(TestRemote):
+
+    def test_update(self):
+        self.remotes.create('remote', self.remote_path)
+        self.remotes.set_url('remote', 'https://new_remote_path')
+
+    def test_update_nonexistent(self):
+        self.assertRaises(KeyError, self.remotes.set_url, 'non_existent_remote', 'https://new_remote_path')
+
+
 class TestRemoteSync(TestRemote):
 
     def setUp(self):

@@ -455,6 +455,9 @@ class RemoteCollection(object):
         self.git_remote_collection.rename(name, new_name)
 
     def set_url(self, name, new_name):
+        remote_names = [r.name for r in self.git_remote_collection]
+        if name not in remote_names:
+            raise KeyError('Invalid remote name {0}: remote doesn\'t exist'.format(name))
         self.git_remote_collection.set_url(name, new_name)
 
 
