@@ -32,8 +32,8 @@ def puts(s='', newline=True, stream=sys.stdout.write):
 
 
 # Colored strings
-RED = '\033[31m'
-RED_BOLD = '\033[1;31m'
+RED = '\033[91m'
+RED_BOLD = '\033[1;91m'
 GREEN = '\033[32m'
 GREEN_BOLD = '\033[1;32m'
 YELLOW = '\033[33m'
