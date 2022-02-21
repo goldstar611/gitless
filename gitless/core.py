@@ -339,9 +339,9 @@ class Repository(object):
             if not move_over:
                 # Stash
                 if move_ignored:
-                    git('stash', 'save', '--include-untracked', '--', msg)
-                else:
                     git('stash', 'save', '--all', '--', msg)
+                else:
+                    git('stash', 'save', '--include-untracked', '--', msg)
 
         def restore(b):
             s_id, msg = _stash(_stash_msg(b.branch_name))

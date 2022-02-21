@@ -896,7 +896,6 @@ class TestBranchCreate(TestBranch):
         self.assertTrue(os.path.exists(TRACKED_FP))
         self.assertEqual(TRACKED_FP_CONTENTS_2, utils_lib.read_file(TRACKED_FP))
         self.assertFalse(os.path.exists(UNTRACKED_FP))
-        self.assertFalse(os.path.exists(IGNORED_FP))
         self.assertFalse(os.path.exists('.gitignore'))
 
     def test_create_from_prev_commit(self):
@@ -905,7 +904,6 @@ class TestBranchCreate(TestBranch):
         self.assertTrue(os.path.exists(TRACKED_FP))
         self.assertEqual(TRACKED_FP_CONTENTS_1, utils_lib.read_file(TRACKED_FP))
         self.assertFalse(os.path.exists(UNTRACKED_FP))
-        self.assertFalse(os.path.exists(IGNORED_FP))
         self.assertFalse(os.path.exists('.gitignore'))
 
 
@@ -937,11 +935,11 @@ class TestBranchSwitch(TestBranch):
         self.assertEqual('contents', utils_lib.read_file(UNTRACKED_FP))
 
     def test_switch_contents_still_there_ignored(self):
-        self.repo.switch_current_branch(self.repo.lookup_branch(BRANCH))
+        self.repo.switch_current_branch(self.repo.lookup_branch(BRANCH), move_ignored=True)
         utils_lib.write_file(IGNORED_FP, contents='contents')
-        self.repo.switch_current_branch(self.repo.lookup_branch('master'))
+        self.repo.switch_current_branch(self.repo.lookup_branch('master'), move_ignored=True)
         self.assertEqual(IGNORED_FP, utils_lib.read_file(IGNORED_FP))
-        self.repo.switch_current_branch(self.repo.lookup_branch(BRANCH))
+        self.repo.switch_current_branch(self.repo.lookup_branch(BRANCH), move_ignored=True)
         self.assertEqual('contents', utils_lib.read_file(IGNORED_FP))
 
     def test_switch_contents_still_there_tracked_commit(self):
@@ -952,7 +950,7 @@ class TestBranchSwitch(TestBranch):
         self.repo.switch_current_branch(self.repo.lookup_branch('master'))
         self.assertEqual('commit', utils_lib.read_file(TRACKED_FP))
 
-    def test_switch_file_classification_is_mantained(self):
+    def test_switch_file_classification_is_maintained(self):
         self.curr_b.untrack_file(TRACKED_FP)
         self.repo.switch_current_branch(self.repo.lookup_branch(BRANCH))
         st = self.curr_b.status_file(TRACKED_FP)
