@@ -25,6 +25,10 @@ def parser(subparsers, repo):
         '-p', '--partial',
         help='Interactively select segments of files to commit', dest='p',
         action='store_true')
+    commit_parser.add_argument(
+        '-so', '--sign-off',
+        help='Adds the \'Signed-off-by\' line to the end of the commit message', dest='sign_off',
+        action='store_true')
     helpers.oei_flags(commit_parser, repo)
     commit_parser.set_defaults(func=main)
 
@@ -66,7 +70,7 @@ def main(args, repo):
         raise ValueError('Missing commit message')
 
     _auto_track(commit_files, curr_b)
-    ci = curr_b.create_commit(commit_files, msg, partials=partials)
+    ci = curr_b.create_commit(commit_files, msg, partials=partials, sign_off=args.sign_off)
     pprint.ok('Commit on branch {0} succeeded'.format(repo.current_branch))
 
     pprint.blank()

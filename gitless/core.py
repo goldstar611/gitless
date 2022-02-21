@@ -1207,7 +1207,7 @@ class Branch(object):
                     'Uncommitted changes failed to apply onto the new head of the '
                     'branch')
 
-    def create_commit(self, files, msg, author=None, partials=None):
+    def create_commit(self, files, msg, author=None, partials=None, sign_off=False):
         """Record a new commit on this branch.
 
         Args:
@@ -1216,6 +1216,7 @@ class Branch(object):
           author: the author of the commit (defaults to the default author
             according to the repository's configuration).
           partials: list of files to commit partially.
+          sign_off: Appends the 'Signed-off-by:' line to the commit message
         """
         git_repo = self.gl_repo.git_repo
         if not author:
@@ -1273,6 +1274,9 @@ class Branch(object):
         parents = [git_repo.head.target]
         if self.merge_in_progress:
             parents.append(git_repo.lookup_reference('MERGE_HEAD').target)
+
+        if sign_off:
+            msg += "{0}{0}Signed-off-by: {1}".format(os.linesep, author.name)
 
         ci_oid = git_repo.create_commit(
             'HEAD',  # will point to the new commit
