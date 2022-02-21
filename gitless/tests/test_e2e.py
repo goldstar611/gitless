@@ -13,11 +13,6 @@ from subprocess import CalledProcessError
 
 from gitless.tests import utils
 
-try:
-    text = unicode
-except NameError:
-    text = str
-
 
 class TestEndToEnd(utils.TestBase):
 
@@ -465,7 +460,7 @@ class TestFuse(TestOp):
         out = utils.gl('history')
         cids = list(reversed(re.findall(r'ci (.*) in (\S*)', out, re.UNICODE)))
         self.assertCountEqual(
-            cids, expected, 'cids is ' + text(cids) + ' exp ' + text(expected))
+            cids, expected, 'cids is ' + str(cids) + ' exp ' + str(expected))
 
         st_out = utils.gl('status')
         self.assertFalse('fuse' in st_out)
@@ -473,7 +468,7 @@ class TestFuse(TestOp):
     def __build(self, branch_name, cids=None):
         if not cids:
             cids = range(self.COMMITS_NUMBER)
-        return [(text(ci), branch_name) for ci in cids]
+        return [(str(ci), branch_name) for ci in cids]
 
     def test_basic(self):
         utils.gl('fuse', self.OTHER)
@@ -715,7 +710,7 @@ class TestPerformance(TestEndToEnd):
     def setUp(self):
         super(TestPerformance, self).setUp()
         for i in range(0, self.FPS_QTY):
-            fp = 'f' + text(i)
+            fp = 'f' + str(i)
             utils.write_file(fp, fp)
 
     def test_status_performance(self):
