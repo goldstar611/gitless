@@ -11,7 +11,7 @@ def parser(subparsers, _):
     """Adds the publish parser to the given subparsers object."""
     desc = 'publish commits upstream'
     publish_parser = subparsers.add_parser(
-        'publish', help=desc, description=desc.capitalize(), aliases=['pb'])
+        'publish', help=desc, description=desc.capitalize(), aliases=['pb', 'push'])
     publish_parser.add_argument(
         'dst', nargs='?', help='the branch where to publish commits')
     publish_parser.set_defaults(func=main)
