@@ -46,7 +46,7 @@ class TestNotInRepo(utils.TestBase):
 
         assert_not_in_repo(
             'status', 'diff', 'commit', 'branch', 'merge', 'fuse', 'remote',
-            'publish', 'history')
+            'publish', 'history', 'ignore')
 
 
 class TestBasic(TestEndToEnd):
@@ -228,6 +228,14 @@ class TestCommit(TestEndToEnd):
         utils.write_file(fp)
         utils.gl('commit', fp, '-m', 'msg')
         self.__assert_commit('dir/f')
+
+    def test_commit_sign_off(self):
+        fp = 'dir/g'
+        utils.write_file(fp)
+        utils.gl('commit', fp, '-m', 'msg', '-so')
+        self.__assert_commit('dir/g')
+        h = utils.gl('history', '-v')
+        self.assertIn("Signed-off-by: ", h)
 
     def __assert_commit(self, *expected_committed):
         h = utils.gl('history', '-v')
