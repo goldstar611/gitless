@@ -55,7 +55,12 @@ def get_branch_or_use_upstream(branch_name, arg, repo):
         if not upstream_b:
             raise ValueError(
                 'No {0} branch specified and the current branch has no upstream '
-                'branch set'.format(arg))
+                'branch set\n\n'
+                'You can fix this by either using\n'
+                '    gl publish remote/branch\n'
+                'each time or\n'
+                '    gl branch --set-upstream remote/branch\n'
+                'one time to set the upstream branch'.format(arg))
 
         ret = current_b.upstream
     else:
