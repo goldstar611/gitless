@@ -511,7 +511,7 @@ class Remote(object):
     def lookup_branches(self, branch_names):
         try:
             git('fetch', self.git_remote.name, *branch_names)
-        except:
+        except Exception:
             return None
         remote_branches = []
         for branch_name in branch_names:

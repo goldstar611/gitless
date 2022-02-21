@@ -150,7 +150,7 @@ def _do_create(create_b, dp, repo):
             try:
                 new_branch.upstream = helpers.get_branch(dp, repo)
                 pprint.ok('Upstream of {0} set to {1}'.format(b_name, dp))
-            except:
+            except Exception:
                 # Not a branch
                 continue
         except ValueError as e:
