@@ -22,6 +22,9 @@ def parser(subparsers, _):
         '-d', '--delete', nargs='+', help='delete remote(es)', dest='delete_r',
         metavar='remote')
     remote_parser.add_argument(
+        '-u', '--update', nargs='+', help='update remote URL', dest='update_r',
+        metavar='remote')
+    remote_parser.add_argument(
         '-rn', '--rename', nargs='+',
         help='renames the specified remote: accepts two arguments '
              '(current remote name and new remote name)',
@@ -38,6 +41,8 @@ def main(args, repo):
         ret = _do_create(args.remote_name, args.remote_url, remotes)
     elif args.delete_r:
         ret = _do_delete(args.delete_r, remotes)
+    elif args.update_r:
+        ret = _do_update(args.update_r, remotes)
     elif args.rename_r:
         ret = _do_rename(args.rename_r, remotes)
     else:
@@ -48,8 +53,8 @@ def main(args, repo):
 
 def _do_list(remotes):
     pprint.msg('List of remotes:')
-    pprint.exp(
-        'do gl remote -c r r_url to add a new remote r mapping to r_url')
+    pprint.exp('do gl remote -c r r_url to add a new remote r mapping to r_url')
+    pprint.exp('do gl remote -u r r_url to change a new remote url to r_url')
     pprint.exp('do gl remote -d r to delete remote r')
     pprint.blank()
 
@@ -86,7 +91,7 @@ def _do_rename(rename_r, remotes):
     errors_found = False
     if len(rename_r) != 2:
         pprint.err(
-            'Expected 2 arguments in the folllowing format: '
+            'Expected 2 arguments in the following format: '
             'gl remote -rn current_remote_name new_remote_name')
         errors_found = True
     else:
@@ -95,5 +100,22 @@ def _do_rename(rename_r, remotes):
             pprint.ok('Renamed remote {0} to {1}'.format(rename_r[0], rename_r[1]))
         except KeyError:
             pprint.err('Remote \'{0}\' doesn\'t exist'.format(rename_r[0]))
+            errors_found = True
+    return not errors_found
+
+
+def _do_update(update_r, remotes):
+    errors_found = False
+    if len(update_r) != 2:
+        pprint.err(
+            'Expected 2 arguments in the following format: '
+            'gl remote -u remote_name https://new_remote_url')
+        errors_found = True
+    else:
+        try:
+            remotes.set_url(update_r[0], update_r[1])
+            pprint.ok('Updated remote {0} URL to {1}'.format(update_r[0], update_r[1]))
+        except KeyError:
+            pprint.err('Remote \'{0}\' doesn\'t exist'.format(update_r[0]))
             errors_found = True
     return not errors_found

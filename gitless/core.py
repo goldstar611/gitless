@@ -456,6 +456,9 @@ class RemoteCollection(object):
     def rename(self, name, new_name):
         self.git_remote_collection.rename(name, new_name)
 
+    def set_url(self, name, new_name):
+        self.git_remote_collection.set_url(name, new_name)
+
 
 class Remote(object):
     """Tracked remote repository.
