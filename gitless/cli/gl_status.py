@@ -25,7 +25,7 @@ def parser(subparsers, repo):
 def main(args, repo):
     curr_b = repo.current_branch
     pprint.msg('On branch {0}, repo-directory {1}'.format(
-        pprint.green(curr_b.branch_name), pprint.green('//' + repo.cwd)))
+        pprint.green(curr_b.branch_name), pprint.green(repo.root)))
 
     if curr_b.merge_in_progress:
         pprint.blank()
