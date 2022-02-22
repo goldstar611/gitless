@@ -14,7 +14,7 @@ def parser(subparsers, _):
     """Adds the history parser to the given subparsers object."""
     desc = 'show commit history'
     history_parser = subparsers.add_parser(
-        'history', help=desc, description=desc.capitalize(), aliases=['hs'])
+        'history', help=desc, description=desc.capitalize(), aliases=['hs', 'log'])
     history_parser.add_argument(
         '-v', '--verbose', help='be verbose, will output the diffs of the commit',
         action='store_true')
