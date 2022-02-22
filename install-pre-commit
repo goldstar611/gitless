@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# Install this hook to $(git rev-parse --git-common-dir)/hooks/pre-commit
-cp $0 $(git rev-parse --git-common-dir)/hooks/pre-commit
+# Installs a git pre-commit hook to <git-dir>/hooks/pre-commit
 
-# Run the tests
+cat >$(git rev-parse --git-common-dir)/hooks/pre-commit <<EOF
+#!/bin/sh
+# Run the tests in a clean environment (env -i)
 env -i python3 -m unittest discover -s $(git rev-parse --show-toplevel) -t $(git rev-parse --show-toplevel) -p 'test_core.py'
+EOF
