@@ -1253,7 +1253,9 @@ class Branch(object):
                     assert not os.path.isabs(f)
                     git_f = _get_git_path(f)
                     if not os.path.exists(os.path.join(self.gl_repo.root, f)):
-                        index.remove(git_f)
+                        # Check if this file has been removed using `git mv` or `git rm`
+                        if git_f in index._git_index:
+                            index.remove(git_f)
                     elif f not in partials:
                         index.add(git_f)
 
