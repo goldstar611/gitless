@@ -192,7 +192,12 @@ def _do_delete(delete_b, repo):
 
 def _do_set_upstream(upstream, repo):
     curr_b = repo.current_branch
-    curr_b.upstream = helpers.get_branch(upstream, repo)
+    try:
+        curr_b.upstream = helpers.get_branch(upstream, repo)
+    except ValueError:
+        pprint.warn('Branch {0} does not exist'.format(upstream))
+        _do_create([upstream], 'HEAD', repo)
+        curr_b.upstream = helpers.get_branch(upstream, repo)
     pprint.ok('Current branch {0} set to track {1}'.format(curr_b, upstream))
     return True
 
