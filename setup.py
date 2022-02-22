@@ -63,7 +63,7 @@ setup(
     packages=['gitless', 'gitless.cli'],
     install_requires=[
         # make sure install_requires is consistent with requirements.txt
-        'pygit2==1.4.0',  # requires libgit2 1.1.x
+        'pygit2>=1.4.0',  # requires libgit2 1.1.x
         'argcomplete>=1.11.1'
     ],
     license='MIT',
