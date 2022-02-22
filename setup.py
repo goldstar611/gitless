@@ -41,11 +41,11 @@ if sys.argv[-1] == 'gl-build':
     sys.exit()
 
 ld = """
-Gitless is a version control system built on top of Git, that is easy to learn
-and use. It features a simple commit workflow, independent branches, and
+Installing Gitless won't interfere with your Git installation in any
+way. You can keep using Git and switch between Git and Gitless seamlessly.
+It features a simple commit workflow, independent branches, and
 a friendly command-line interface. Because Gitless is implemented on top of
-Git, you can always fall back on Git. And your coworkers you share a repo with
-need never know that you're not a Git aficionado.
+Git, you can always fall back to the Git command line interface.
 
 More info, downloads and documentation @ `Gitless's
 website <http://gitless.com>`__.
@@ -54,11 +54,12 @@ website <http://gitless.com>`__.
 setup(
     name='gitless',
     version=version,
-    description='A simple version control system built on top of Git',
+    description='A maintained simple interface to git operations',
     long_description=ld,
     author='Santiago Perez De Rosso',
     author_email='sperezde@csail.mit.edu',
-    url='https://gitless.com',
+    maintainer='@goldstar611',
+    url='https://github.com/goldstar611/gitless',
     packages=['gitless', 'gitless.cli'],
     install_requires=[
         # make sure install_requires is consistent with requirements.txt
@@ -67,11 +68,11 @@ setup(
     ],
     license='MIT',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Version Control'],
     entry_points={
         'console_scripts': [

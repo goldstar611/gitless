@@ -14,7 +14,7 @@ Gitless
     Gitless commands will give you good feedback and help you figure out what to do next
 - **Compatible with Git**
 
-    Because Gitless is implemented on top of Git, you can always fall back on Git. And your coworkers you share a repo with need never know that you're not a Git aficionado. Moreover, you can use Gitless with GitHub or with any Git hosting service
+    Because Gitless is implemented on top of Git, you can always fall back to the Git command line interface. Moreover, you can use Gitless with GitHub or with any Git hosting service
 
 
 Install
