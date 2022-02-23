@@ -177,9 +177,10 @@ def commit(ci, compact=False, stream=sys.stdout.write, line_additions=0, line_de
         ci.author.time, FixedOffset(ci.author.offset))
     puts(color('Date:      {0:%c %z}'.format(ci_author_dt)), stream=stream)
     put_s = lambda num: '' if num == 1 else 's'
-    puts(color('Stats:     {0} line{1} added, {2} line{3} removed'
-               .format(line_additions, put_s(line_additions),
-                       line_deletions, put_s(line_deletions))), stream=stream)
+    if line_additions or line_deletions:
+        puts(color('Stats:     {0} line{1} added, {2} line{3} removed'
+                   .format(line_additions, put_s(line_additions),
+                           line_deletions, put_s(line_deletions))), stream=stream)
     puts(stream=stream)
     puts('    {0}'.format(ci.message), stream=stream)
 
