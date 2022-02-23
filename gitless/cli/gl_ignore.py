@@ -19,6 +19,10 @@ def parser(subparsers, _):
         '-g', '--global', dest='ignore_global',
         help='add the file patterns to the .gitignore file at the repo root, not current working directory',
         action='store_true')
+    ignore_parser.add_argument(
+        '-c', '--comment', dest='comment',
+        help='add the file patterns to the .gitignore file at the repo root, not current working directory',
+        default='Ignored by gitless cli')
     ignore_parser.set_defaults(func=main)
 
 
@@ -31,7 +35,7 @@ def main(args, repo):
             git_ignore_file = ".gitignore"
 
         with open(git_ignore_file, "at") as f:
-            f.write("{0}# Ignored by gitless cli{0}".format(os.linesep))
+            f.write("{0}# {1}{0}".format(os.linesep, args.comment))
             for pattern in args.ignored_list:
                 f.write("{0}{1}".format(pattern, os.linesep))
 
