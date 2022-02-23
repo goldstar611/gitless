@@ -196,7 +196,10 @@ def _do_set_upstream(upstream, repo):
         curr_b.upstream = helpers.get_branch(upstream, repo)
     except ValueError:
         pprint.warn('Branch {0} does not exist'.format(upstream))
-        _do_create([upstream], 'HEAD', repo)
+        if upstream.split('/', 1)[0] in repo.remotes:
+            _do_create([upstream], 'HEAD', repo)
+        else:
+            pprint.item("To create the branch locally use `gl branch -c {0}`".format(upstream))
         curr_b.upstream = helpers.get_branch(upstream, repo)
     pprint.ok('Current branch {0} set to track {1}'.format(curr_b, upstream))
     return True
