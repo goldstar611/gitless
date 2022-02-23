@@ -21,7 +21,7 @@ def parser(subparsers, _):
         action='store_true')
     ignore_parser.add_argument(
         '-c', '--comment', dest='comment',
-        help='add the file patterns to the .gitignore file at the repo root, not current working directory',
+        help='Customize the comment that is prepended to the ignore pattern. Defaults to \'Ignored by gitless cli\'',
         default='Ignored by gitless cli')
     ignore_parser.set_defaults(func=main)
 
