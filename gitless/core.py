@@ -219,14 +219,9 @@ class Repository(object):
         if self.git_repo.head_is_detached:
             b = self.git_repo.lookup_reference('GL_FUSE_ORIG_HEAD').resolve()
         else:
-            try:
-                b = self.git_repo.head
-            except pygit2.GitError as e:
-                if 'reference \'refs/heads/master\' not found' in '{0}'.format(e):
-                    git('commit', '--allow-empty', '-m', 'Initialize repository')
-                    b = self.git_repo.head
-                else:
-                    raise
+            if self.git_repo.is_empty:
+                git('commit', '--allow-empty', '-m', 'Initialize repository')
+            b = self.git_repo.head
 
         return self.lookup_branch(b.shorthand)
 
