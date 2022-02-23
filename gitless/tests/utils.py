@@ -96,10 +96,16 @@ def read_file(fp):
 
 
 def git(*args, cwd=None, _in=None):
-    p = run(
-        ['git', '--no-pager', *args], capture_output=True, check=True, cwd=cwd,
-        input=_in, encoding=ENCODING)
-    return p.stdout
+    try:
+        p = run(
+            ['git', '--no-pager', *args], capture_output=True, check=True, cwd=cwd,
+            input=_in, encoding=ENCODING)
+        return p.stdout
+    except Exception as exc: ## TODO REMOVE ME AFTER GITHUB ACTIONS ARE COMPLETE
+        print(exc.returncode)
+        print(exc.stdout)
+        print(exc.stderr)
+        raise
 
 
 def gl(*args, cwd=None, _in=None):
