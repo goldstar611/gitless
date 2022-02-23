@@ -42,7 +42,7 @@ class TestNotInRepo(utils.TestBase):
         def assert_not_in_repo(*cmds):
             for cmd in cmds:
                 self.assertRaisesRegexp(
-                    CalledProcessError, 'not in a Gitless\'s repository', utils.gl, cmd)
+                    CalledProcessError, 'not in a Gitless repository', utils.gl, cmd)
 
         assert_not_in_repo(
             'status', 'diff', 'commit', 'branch', 'merge', 'fuse', 'remote',
