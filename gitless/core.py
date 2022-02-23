@@ -870,8 +870,8 @@ class Branch(object):
             raise ValueError('File {0} is already tracked'.format(path))
         elif gl_st.type == GL_STATUS_IGNORED:
             raise ValueError(
-                'File {0} is ignored. Edit the .gitignore file to stop ignoring '
-                'file {0}'.format(path))
+                'File {0} is ignored. Edit the .gitignore file to stop ignoring file {0}\n'
+                'or use `git add -f {0}`'.format(path))
 
         # If we reached this point we know that the file to track is a untracked
         # file. This means that in the Git world, the file could be either:
