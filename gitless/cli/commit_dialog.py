@@ -2,7 +2,7 @@
 # Gitless - a version control system built on top of Git
 # Licensed under MIT
 
-"""Gitless's commit dialog."""
+"""Gitless commit dialog."""
 
 import io
 from locale import getpreferredencoding

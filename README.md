@@ -1,7 +1,7 @@
 Gitless
 =======
 
-[Gitless](http://gitless.com "Gitless's website") is an easy-to-use interface to Git that is also easy to learn:
+[Gitless](http://gitless.com "The Gitless website") is an easy-to-use interface to Git that is also easy to learn:
 
 - **Simple commit workflow**
 
@@ -34,11 +34,22 @@ http://www.pygit2.org/install.html "pygit2 install").
 
     $ pip3 install https://github.com/goldstar611/gitless/archive/refs/heads/master.zip
 
+### Installing via the Arch User Repository
+
+If you are using [Arch Linux](https://www.archlinux.org/) or any of
+its derivatives, you can use your favorite
+[AUR Helper](https://wiki.archlinux.org/index.php/AUR_helpers) and install:
+- [gitless](https://aur.archlinux.org/packages/gitless/) for the latest
+  released version of **this fork.**
+#### Note
+- [gitless-git](https://aur.archlinux.org/packages/gitless-git/) points to the 
+  last version from the original author, spderosso. It was last updated in 2021.
+
 Documentation
 -------------
 
 `gl -h`, `gl subcmd -h` or check
-[our documentation](http://gitless.com "Gitless's website")
+[our documentation](http://gitless.com "Gitless website")
 
 
 Contribute

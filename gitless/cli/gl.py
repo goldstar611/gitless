@@ -2,7 +2,7 @@
 # Gitless - a version control system built on top of Git
 # Licensed under MIT
 
-"""gl - Main Gitless's command. Dispatcher to the other cmds."""
+"""gl - Main Gitless command. Dispatcher to the other cmds."""
 
 import sys
 import argparse
@@ -103,7 +103,7 @@ def main():
     args = parser.parse_args()
     try:
         if args.subcmd_name != 'init' and not repo:
-            raise core.NotInRepoError('You are not in a Gitless\'s repository')
+            raise core.NotInRepoError('You are not in a Gitless repository')
 
         setup_windows_console()
         return SUCCESS if args.func(args, repo) else ERRORS_FOUND
