@@ -78,6 +78,9 @@ class TestCore(utils_lib.TestBase):
         super(TestCore, self).setUp('gl-core-test')
         init_msg = utils_lib.git('init')
         self.assertIn("Initialized empty Git repository", init_msg)
+        # Gitless requires at least one commit to properly function
+        commit_msg = utils_lib.git('commit', '--allow-empty', '-m', 'Initialize test repository')
+        self.assertIn("Initialize test repository", commit_msg)
         utils_lib.set_test_config()
         self.repo = core.Repository()
 

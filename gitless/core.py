@@ -38,6 +38,12 @@ class ApplyFailedError(GlError): pass
 class ShallowCloneException(GlError): pass
 
 
+class DetachedHeadException(GlError): pass
+
+
+class RepoEmptyException(GlError): pass
+
+
 class PathIsDirectoryError(ValueError): pass
 
 
@@ -46,13 +52,6 @@ class PathIsDirectoryError(ValueError): pass
 GL_STATUS_UNTRACKED = 1
 GL_STATUS_TRACKED = 2
 GL_STATUS_IGNORED = 3
-
-
-def error_on_none(path):
-    """Raise a KeyError if the ```path``` argument is None."""
-    if path is None:
-        raise KeyError('path')
-    return path
 
 
 def init_repository(url=None, only=None, exclude=None):
@@ -67,10 +66,13 @@ def init_repository(url=None, only=None, exclude=None):
         consistent of all branches not in this set
     """
     cwd = os.getcwd()
-    try:
-        error_on_none(pygit2.discover_repository(cwd))
-        raise GlError('You are already in a Gitless repository')
-    except KeyError:  # Expected
+    if pygit2.discover_repository(cwd):
+        if pygit2.Repository(cwd).is_empty:
+            # Create an initial root commit to prevent errors later
+            git('commit', '--allow-empty', '-m', 'Initialize repository')
+        else:
+            raise GlError('You are already in a Gitless repository')
+    else:
         if not url:
             repo = pygit2.init_repository(cwd)
             # Create an initial root commit to prevent errors later
@@ -113,9 +115,8 @@ class Repository(object):
 
     def __init__(self):
         """Create a Repository out of the current working repository."""
-        try:
-            path = error_on_none(pygit2.discover_repository(os.getcwd()))
-        except KeyError:
+        path = pygit2.discover_repository(os.getcwd())
+        if not path:
             raise NotInRepoError('You are not in a Gitless repository')
 
         self.git_repo = pygit2.Repository(path)
@@ -126,6 +127,9 @@ class Repository(object):
 
         if self.git_repo.is_shallow:
             raise ShallowCloneException("Gitless is not compatible with shallow clones or with --depth specified.")
+
+        if self.git_repo.is_empty:
+            raise RepoEmptyException("This repository must be initialized before it is compatible with gitless")
 
     @property
     def cwd(self):
@@ -223,10 +227,13 @@ class Repository(object):
     @property
     def current_branch(self):
         if self.git_repo.head_is_detached:
-            b = self.git_repo.lookup_reference('GL_FUSE_ORIG_HEAD').resolve()
+            try:
+                b = self.git_repo.lookup_reference('GL_FUSE_ORIG_HEAD').resolve()
+            except KeyError as e:
+                raise DetachedHeadException('This repository is in \'detached HEAD\' state and gitless '
+                                            'could not find the GL_FUSE_ORIG_HEAD reference.\n'
+                                            'Switch back to a branch to continue using gitless')
         else:
-            if self.git_repo.is_empty:
-                git('commit', '--allow-empty', '-m', 'Initialize repository')
             b = self.git_repo.head
 
         return self.lookup_branch(b.shorthand)

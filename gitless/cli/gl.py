@@ -38,11 +38,8 @@ try:
     except pygit2.GitError:
         pprint.DISABLE_COLOR = (
                 repo.config['color.ui'] in ['no', 'never'])
-except (core.NotInRepoError, KeyError):
+except (core.NotInRepoError, core.ShallowCloneException, core.RepoEmptyException, KeyError):
     pass
-except core.ShallowCloneException as e:
-    pprint.err(e)
-    sys.exit(1)
 
 
 def print_help(parser):
@@ -114,6 +111,9 @@ def main():
         pprint.puts('\n')
         pprint.msg('Keyboard interrupt detected, operation aborted')
         return SUCCESS
+    except core.ShallowCloneException as e:
+        pprint.err(e)
+        return ERRORS_FOUND
     except core.NotInRepoError as e:
         pprint.err(e)
         pprint.err_exp('do gl init to turn this directory into an empty repository')
