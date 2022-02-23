@@ -12,7 +12,7 @@ import pygit2
 
 from subprocess import CalledProcessError
 
-from gitless import core
+from .. import core
 
 from . import (
     gl_track, gl_untrack, gl_status, gl_diff, gl_commit, gl_branch, gl_tag,
@@ -40,6 +40,9 @@ try:
                 repo.config['color.ui'] in ['no', 'never'])
 except (core.NotInRepoError, KeyError):
     pass
+except core.ShallowCloneException as e:
+    pprint.err(e)
+    sys.exit(1)
 
 
 def print_help(parser):

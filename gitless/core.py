@@ -2,7 +2,7 @@
 # Gitless - a version control system built on top of Git
 # Licensed under MIT
 
-"""Gitless's library."""
+"""Gitless library."""
 
 import collections
 import errno
@@ -35,6 +35,9 @@ class BranchIsCurrentError(GlError): pass
 class ApplyFailedError(GlError): pass
 
 
+class ShallowCloneException(GlError): pass
+
+
 class PathIsDirectoryError(ValueError): pass
 
 
@@ -53,7 +56,7 @@ def error_on_none(path):
 
 
 def init_repository(url=None, only=None, exclude=None):
-    """Creates a new Gitless's repository in the cwd.
+    """Creates a new Gitless repository in the cwd.
 
     Args:
       url: if given the local repository will be a clone of the remote repository
@@ -96,10 +99,10 @@ def init_repository(url=None, only=None, exclude=None):
 
 
 class Repository(object):
-    """A Gitless's repository.
+    """A Gitless repository.
 
     Attributes:
-      path: absolute path to the Gitless's dir (the .git dir).
+      path: absolute path to the Gitless dir (the .git dir).
       root: absolute path to the root of this repository.
       cwd: the current working directory relative to the root of this
         repository ('' if they are equal).
@@ -113,13 +116,16 @@ class Repository(object):
         try:
             path = error_on_none(pygit2.discover_repository(os.getcwd()))
         except KeyError:
-            raise NotInRepoError('You are not in a Gitless\'s repository')
+            raise NotInRepoError('You are not in a Gitless repository')
 
         self.git_repo = pygit2.Repository(path)
         self.remotes = RemoteCollection(self.git_repo.remotes, self)
         self.path = self.git_repo.path
         self.root = self.git_repo.workdir
         self.config = self.git_repo.config
+
+        if self.git_repo.is_shallow:
+            raise ShallowCloneException("Gitless is not compatible with shallow clones or with --depth specified.")
 
     @property
     def cwd(self):
@@ -232,7 +238,7 @@ class Repository(object):
                 self)
         except ValueError as e:
             # Edit pygit2's error msg (the message exposes Git details that will
-            # confuse the Gitless's user)
+            # confuse the Gitless user)
             raise ValueError(
                 str(e).replace('refs/heads/', '').replace('reference', 'branch'))
 
