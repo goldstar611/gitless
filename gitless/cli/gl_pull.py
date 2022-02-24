@@ -20,4 +20,4 @@ def parser(subparsers, _):
 
 
 def main(args, repo):
-    core.git('pull', *args.pull_args)
+    core.git_wrap('pull', *args.pull_args)

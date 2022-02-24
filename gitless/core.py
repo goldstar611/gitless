@@ -1016,7 +1016,7 @@ class Branch(object):
             git('merge', str(src), '--no-ff')
         except CalledProcessError as e:
             err = e.stderr
-            if not 'stash' in err:
+            if 'stash' not in err:
                 raise GlError(e.stdout + err)
             if op_cb and op_cb.save:
                 op_cb.save()
@@ -1399,6 +1399,11 @@ OpCb = collections.namedtuple(
 
 def git(*args, cwd=None, _in=None):
     return git_p(*args, cwd=cwd, _in=_in).stdout
+
+
+def git_wrap(*args):
+    p = run(['git', *args], stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr)
+    return p
 
 
 def git_p(*args, cwd=None, _in=None):

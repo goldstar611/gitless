@@ -20,4 +20,4 @@ def parser(subparsers, _):
 
 
 def main(args, repo):
-    core.git('fetch', *args.fetch_args)
+    core.git_wrap('fetch', *args.fetch_args)
