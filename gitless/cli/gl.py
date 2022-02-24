@@ -12,7 +12,7 @@ import pygit2
 
 from subprocess import CalledProcessError
 
-from .. import core
+from .. import core, __version__
 
 from . import (
     gl_track, gl_untrack, gl_status, gl_diff, gl_commit, gl_branch, gl_tag,
@@ -27,8 +27,7 @@ ERRORS_FOUND = 1
 INTERNAL_ERROR = 3
 NOT_IN_GL_REPO = 4
 
-__version__ = '0.8.8'
-URL = 'http://gitless.com'
+URL = 'https://github.com/goldstar611/gitless'
 
 repo = None
 try:
