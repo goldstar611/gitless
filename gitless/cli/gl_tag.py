@@ -23,7 +23,7 @@ def parser(subparsers, _):
 
     create_group = tag_parser.add_argument_group('create tags')
     create_group.add_argument(
-        '-c', '--create', nargs='+', help='create tag(s)', dest='create_t',
+        '-c', '--create', nargs='+', help='create tag(s) locally or on a remote (e.g. origin/tag)', dest='create_t',
         metavar='tag')
     create_group.add_argument(
         '-ci', '--commit',
