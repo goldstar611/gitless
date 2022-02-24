@@ -48,7 +48,7 @@ a friendly command-line interface. Because Gitless is implemented on top of
 Git, you can always fall back to the Git command line interface.
 
 More info, downloads and documentation @ The `Gitless
-website <http://gitless.com>`__.
+website <https://goldstar611.github.io/gitless/>`__.
 """
 
 setup(

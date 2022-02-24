@@ -1,7 +1,7 @@
 Gitless
 =======
 
-[Gitless](http://gitless.com "The Gitless website") is an easy-to-use interface to Git that is also easy to learn:
+[Gitless](https://goldstar611.github.io/gitless/ "The Gitless website") is an easy-to-use interface to Git that is also easy to learn:
 
 - **Simple commit workflow**
 
@@ -49,7 +49,7 @@ Documentation
 -------------
 
 `gl -h`, `gl subcmd -h` or check
-[our documentation](http://gitless.com "Gitless website")
+[our documentation](https://goldstar611.github.io/gitless/ "Gitless website")
 
 
 Contribute
