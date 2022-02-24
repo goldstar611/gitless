@@ -40,10 +40,9 @@ If you are using [Arch Linux](https://www.archlinux.org/) or any of
 its derivatives, you can use your favorite
 [AUR Helper](https://wiki.archlinux.org/index.php/AUR_helpers) and install:
 - [gitless](https://aur.archlinux.org/packages/gitless/) for the latest
-  released version of **this fork.**
-#### Note
-- [gitless-git](https://aur.archlinux.org/packages/gitless-git/) points to the 
-  last version from the original author, spderosso. It was last updated in 2021.
+  [tagged release](https://github.com/goldstar611/gitless/tags).
+- [gitless-git](https://aur.archlinux.org/packages/gitless-git/) for the latest 
+  changes in the default branch (master currently).
 
 Documentation
 -------------
