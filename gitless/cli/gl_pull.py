@@ -10,7 +10,7 @@ from ..import core
 
 def parser(subparsers, _):
     """Adds the pull parser to the given subparsers object."""
-    desc = 'Synchronize branches, tags, references and other meta data from mirror repository.\n' \
+    desc = 'Synchronize and merges branches, tags, references and other meta data from mirror repository.\n' \
            'For more information on this advanced command refer to the manual page for git-pull.'
     pull_parser = subparsers.add_parser(
         'pull', help=desc, description=desc.capitalize(), aliases=['pl'])
