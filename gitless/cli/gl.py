@@ -17,7 +17,7 @@ from .. import core, __version__
 from . import (
     gl_track, gl_untrack, gl_status, gl_diff, gl_commit, gl_branch, gl_tag,
     gl_checkout, gl_merge, gl_resolve, gl_fuse, gl_remote, gl_publish,
-    gl_switch, gl_init, gl_history, gl_ignore, gl_fetch)
+    gl_switch, gl_init, gl_history, gl_ignore, gl_fetch, gl_pull)
 from . import pprint
 from . import helpers
 
@@ -91,7 +91,7 @@ def main():
     sub_cmds = [
         gl_track, gl_untrack, gl_status, gl_diff, gl_commit, gl_branch, gl_tag,
         gl_checkout, gl_merge, gl_resolve, gl_fuse, gl_remote, gl_publish,
-        gl_switch, gl_init, gl_history, gl_ignore, gl_fetch]
+        gl_switch, gl_init, gl_history, gl_ignore, gl_fetch ,gl_pull]
 
     parser = build_parser(sub_cmds, repo)
     argcomplete.autocomplete(parser)
