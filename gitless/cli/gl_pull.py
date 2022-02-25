@@ -6,6 +6,7 @@
 
 
 from ..import core
+from . import helpers, pprint
 
 
 def parser(subparsers, _):
@@ -21,3 +22,5 @@ def parser(subparsers, _):
 
 def main(args, repo):
     core.git_wrap('pull', *args.pull_args)
+    pprint.ok('Pulling from your mirror succeeded')
+    return True
