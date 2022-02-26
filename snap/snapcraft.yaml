@@ -1,5 +1,3 @@
-# obligatory fields
-
 name: gitless-snap
 version: git
 summary: A simple interface to common git operations
@@ -11,30 +9,50 @@ description: |
 
 
 base: core20
-
 grade: stable
 confinement: strict
 
 architectures:
   - build-on: amd64
 
-# 'optional' fields
-
-apps:
-  gitless-snap:
-    command: bin/gl
-    plugs: [network, network-bind, removable-media]
+environment:
+  GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+  GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
+  GIT_CONFIG_NOSYSTEM: 1
 
 hooks:
   configure:
-    plugs: [home, network, network-bind, removable-media]
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
   pre-refresh:
-    plugs: [home, network, network-bind, removable-media]
-
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+    
+apps:
+  gitless-snap:
+    command: bin/gl
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+  git:
+    command: usr/bin/git
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+  
 parts:
   gitless-cli:
     plugin: python
     source: https://github.com/goldstar611/gitless.git
     stage-packages:
       - git
-      - curl
