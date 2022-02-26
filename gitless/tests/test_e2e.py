@@ -17,8 +17,8 @@ from gitless.tests import utils
 
 class TestEndToEnd(utils.TestBase):
 
-    def setUp(self):
-        super(TestEndToEnd, self).setUp('gl-e2e-test')
+    def setUp(self, prefix_for_tmp_repo='gl-e2e-test'):
+        super(TestEndToEnd, self).setUp(prefix_for_tmp_repo)
         utils.gl('init')
         # Disable colored output so that we don't need to worry about ANSI escape
         # codes
@@ -40,15 +40,20 @@ class TestWithRemote(TestEndToEnd):
     for the main testing repository
     """
     def setUp(self):
-        # Create a remote repository first
-        self.remote_path = tempfile.mkdtemp(prefix="gl-e2e-test-remote")
-        logging.debug('Created temporary directory {0}'.format(self.remote_path))
-        os.chdir(self.remote_path)
-        utils.gl('init')
-        # Create the main test repo
-        super().setUp()
-        # Set up the remote
+        # Create the remote repository first
+        super(TestWithRemote, self).setUp('gl-e2e-test-remote')
+        self.remote_path = self.path
+        # Add a commit so test repository has something to pull in
+        utils.git('commit', '--allow-empty', '-m', 'Initialize Remote repository')
+        # Create the test repository
+        super(TestWithRemote, self).setUp()
+        # Add the remote
         utils.git('remote', 'add', 'origin', self.remote_path)
+
+    def tearDown(self):
+        super().tearDown()
+        self.path = self.remote_path
+        super().tearDown()
 
 
 class TestNotInRepo(utils.TestBase):
@@ -795,7 +800,7 @@ class TestFetch(TestWithRemote):
     Basic smoke tests for gl fetch
     """
 
-    def test_fetch_pass(self):
+    def test_fetch(self):
         utils.gl('fetch')
 
     def test_fetch_bad_origin(self):
@@ -820,7 +825,7 @@ class TestPull(TestWithRemote):
     Basic smoke tests for gl pull
     """
 
-    def test_pull_pass(self):
+    def test_pull(self):
         utils.gl('pull', 'origin', 'master')
 
     def test_pull_bad_origin(self):
