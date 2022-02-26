@@ -25,3 +25,4 @@ def main(args, repo):
         pprint.ok('Creating a patch sucessful')
     else:
         pprint.err('Creating a patch failed')
+    return p.returncode == 0
