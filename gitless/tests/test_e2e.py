@@ -8,6 +8,7 @@ import logging
 import os
 import re
 import sys
+import tempfile
 import time
 from subprocess import CalledProcessError
 
@@ -31,6 +32,23 @@ class TestEndToEnd(utils.TestBase):
             # is so that the command window gets closed after 'type' finishes
             utils.git('config', 'core.pager', 'cmd /C type')
         utils.set_test_config()
+
+
+class TestWithRemote(TestEndToEnd):
+    """
+    A parent class that creates an extra repository to be a remote
+    for the main testing repository
+    """
+    def setUp(self):
+        # Create a remote repository first
+        self.remote_path = tempfile.mkdtemp(prefix="gl-e2e-test-remote")
+        logging.debug('Created temporary directory {0}'.format(self.remote_path))
+        os.chdir(self.remote_path)
+        utils.gl('init')
+        # Create the main test repo
+        super().setUp()
+        # Set up the remote
+        utils.git('remote', 'add', 'origin', self.remote_path)
 
 
 class TestNotInRepo(utils.TestBase):
@@ -770,3 +788,53 @@ class TestPerformance(TestEndToEnd):
         self.assertTrue(
             gl_t < git_t * MAX_TOLERANCE,
             msg='gl_t {0}, git_t {1}'.format(gl_t, git_t))
+
+
+class TestFetch(TestWithRemote):
+    """
+    Basic smoke tests for gl fetch
+    """
+
+    def test_fetch_pass(self):
+        utils.gl('fetch')
+
+    def test_fetch_bad_origin(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'does not appear to be a git repository',
+            utils.gl, 'fetch', 'badorigin', 'master')
+
+    def test_fetch_bad_branch(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'Couldn\'t find remote ref',
+            utils.gl, 'fetch', 'origin', 'badbranch')
+
+# TODO: Check why argparse doesn't grab the --bad-option argument
+#    def test_fetch_bad_option(self):
+#        self.assertRaisesRegexp(
+#            CalledProcessError, 'error: unknown option',
+#            utils.gl, 'fetch', 'origin', 'master', '--bad-option')
+
+
+class TestPull(TestWithRemote):
+    """
+    Basic smoke tests for gl pull
+    """
+
+    def test_pull_pass(self):
+        utils.gl('pull', 'origin', 'master')
+
+    def test_pull_bad_origin(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'does not appear to be a git repository',
+            utils.gl, 'pull', 'badorigin', 'master')
+
+    def test_pull_bad_branch(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'Couldn\'t find remote ref',
+            utils.gl, 'pull', 'origin', 'badbranch')
+
+# TODO: Check why argparse doesn't grab the --bad-option argument
+#    def test_pull_bad_option(self):
+#        self.assertRaisesRegexp(
+#            CalledProcessError, 'error: unknown option',
+#            utils.gl, 'pull', 'origin', 'master', '--bad-option')
