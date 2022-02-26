@@ -21,5 +21,7 @@ def parser(subparsers, _):
 
 def main(args, repo):
     p = core.git_wrap('format-patch', *args.patch_args)
-    pprint.ok('Patch created successful')
-    return p.returncode == 0
+    if p.returncode == 0:
+        pprint.ok('Creating a patch sucessful')
+    else:
+        pprint.err('Creating a patch failed')
