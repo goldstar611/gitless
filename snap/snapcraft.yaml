@@ -21,8 +21,9 @@ architectures:
 # 'optional' fields
 
 apps:
-  gl:
+  gitless-snap:
     command: bin/gl
+    plugs: [network, network-bind, removable-media]
 
 hooks:
   configure:
