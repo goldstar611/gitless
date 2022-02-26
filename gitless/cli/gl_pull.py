@@ -21,6 +21,6 @@ def parser(subparsers, _):
 
 
 def main(args, repo):
-    core.git_wrap('pull', *args.pull_args)
+    p = core.git_wrap('pull', *args.pull_args)
     pprint.ok('Pulling from your mirror succeeded')
     return p.returncode == 0
