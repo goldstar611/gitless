@@ -22,5 +22,7 @@ def parser(subparsers, _):
 
 def main(args, repo):
     p = core.git_wrap('fetch', *args.fetch_args)
+if p.returncode == 0:
     pprint.ok('Fetching from upstream succeeded')
-    return p.returncode == 0
+else:
+    pprint.err('Fetching from upstream failed')
