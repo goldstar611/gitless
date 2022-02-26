@@ -40,15 +40,18 @@ class TestWithRemote(TestEndToEnd):
     for the main testing repository
     """
     def setUp(self):
-        # Create the remote repository first
+        # Create the remote repository
         super(TestWithRemote, self).setUp('gl-e2e-test-remote')
         self.remote_path = self.path
-        # Add a commit so test repository has something to pull in
+        # Clone the test repository from the remote
+        self.path = tempfile.mkdtemp(prefix="gl-e2e-test")
+        logging.debug('Created temporary directory {0}'.format(self.path))
+        utils.git('clone', self.remote_path, self.path)
+        # Add a commit to remote so test repository has something to pull in
+        os.chdir(self.remote_path)
         utils.git('commit', '--allow-empty', '-m', 'Initialize Remote repository')
-        # Create the test repository
-        super(TestWithRemote, self).setUp()
-        # Add the remote
-        utils.git('remote', 'add', 'origin', self.remote_path)
+        # Switch back to test repo
+        os.chdir(self.path)
 
     def tearDown(self):
         super().tearDown()
