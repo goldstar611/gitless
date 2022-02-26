@@ -34,3 +34,5 @@ parts:
   gitless-cli:
     plugin: python
     source: https://github.com/goldstar611/gitless.git
+    stage-packages:
+      - git
