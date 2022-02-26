@@ -53,6 +53,11 @@ you can install the most recent update of Gitless with:
 ```
 sudo snap install gitless-snap --edge
 ```
+Then create an alias for the gl command using
+```
+sudo snap alias gitless-snap gl
+```
+Also be sure that `/snap/bin` is part of your $PATH
 
 Documentation
 -------------
