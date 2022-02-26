@@ -8,6 +8,7 @@ import logging
 import os
 import re
 import sys
+import tempfile
 import time
 from subprocess import CalledProcessError
 
@@ -16,8 +17,8 @@ from gitless.tests import utils
 
 class TestEndToEnd(utils.TestBase):
 
-    def setUp(self):
-        super(TestEndToEnd, self).setUp('gl-e2e-test')
+    def setUp(self, prefix_for_tmp_repo='gl-e2e-test'):
+        super(TestEndToEnd, self).setUp(prefix_for_tmp_repo)
         utils.gl('init')
         # Disable colored output so that we don't need to worry about ANSI escape
         # codes
@@ -31,6 +32,28 @@ class TestEndToEnd(utils.TestBase):
             # is so that the command window gets closed after 'type' finishes
             utils.git('config', 'core.pager', 'cmd /C type')
         utils.set_test_config()
+
+
+class TestWithRemote(TestEndToEnd):
+    """
+    A parent class that creates an extra repository to be a remote
+    for the main testing repository
+    """
+    def setUp(self):
+        # Create the remote repository first
+        super(TestWithRemote, self).setUp('gl-e2e-test-remote')
+        self.remote_path = self.path
+        # Add a commit so test repository has something to pull in
+        utils.git('commit', '--allow-empty', '-m', 'Initialize Remote repository')
+        # Create the test repository
+        super(TestWithRemote, self).setUp()
+        # Add the remote
+        utils.git('remote', 'add', 'origin', self.remote_path)
+
+    def tearDown(self):
+        super().tearDown()
+        self.path = self.remote_path
+        super().tearDown()
 
 
 class TestNotInRepo(utils.TestBase):
@@ -770,3 +793,53 @@ class TestPerformance(TestEndToEnd):
         self.assertTrue(
             gl_t < git_t * MAX_TOLERANCE,
             msg='gl_t {0}, git_t {1}'.format(gl_t, git_t))
+
+
+class TestFetch(TestWithRemote):
+    """
+    Basic smoke tests for gl fetch
+    """
+
+    def test_fetch(self):
+        utils.gl('fetch')
+
+    def test_fetch_bad_origin(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'does not appear to be a git repository',
+            utils.gl, 'fetch', 'badorigin', 'master')
+
+    def test_fetch_bad_branch(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, '[Cc]ouldn\'t find remote ref',
+            utils.gl, 'fetch', 'origin', 'badbranch')
+
+# TODO: Check why argparse doesn't grab the --bad-option argument
+#    def test_fetch_bad_option(self):
+#        self.assertRaisesRegexp(
+#            CalledProcessError, 'error: unknown option',
+#            utils.gl, 'fetch', 'origin', 'master', '--bad-option')
+
+
+class TestPull(TestWithRemote):
+    """
+    Basic smoke tests for gl pull
+    """
+
+    def test_pull(self):
+        utils.gl('pull', 'origin', 'master')
+
+    def test_pull_bad_origin(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, 'does not appear to be a git repository',
+            utils.gl, 'pull', 'badorigin', 'master')
+
+    def test_pull_bad_branch(self):
+        self.assertRaisesRegexp(
+            CalledProcessError, '[Cc]ouldn\'t find remote ref',
+            utils.gl, 'pull', 'origin', 'badbranch')
+
+# TODO: Check why argparse doesn't grab the --bad-option argument
+#    def test_pull_bad_option(self):
+#        self.assertRaisesRegexp(
+#            CalledProcessError, 'error: unknown option',
+#            utils.gl, 'pull', 'origin', 'master', '--bad-option')

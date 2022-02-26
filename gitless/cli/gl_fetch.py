@@ -6,6 +6,7 @@
 
 
 from ..import core
+from . import pprint
 
 
 def parser(subparsers, _):
@@ -20,4 +21,9 @@ def parser(subparsers, _):
 
 
 def main(args, repo):
-    core.git_wrap('fetch', *args.fetch_args)
+    p = core.git_wrap('fetch', *args.fetch_args)
+    if p.returncode == 0:
+        pprint.ok('Fetching from upstream succeeded')
+    else:
+        pprint.err('Fetching from upstream failed')
+    return p.returncode == 0
