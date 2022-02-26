@@ -44,6 +44,16 @@ its derivatives, you can use your favorite
 - [gitless-git](https://aur.archlinux.org/packages/gitless-git/) for the latest 
   changes in the default branch (master currently).
 
+### Installing via Snapcraft (Linux only)
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gitless-snap)
+
+If you are using Snapcraft, a package manager for Linux, 
+you can install the most recent update of Gitless with:
+
+```
+sudo snap install gitless-snap --edge
+```
+
 Documentation
 -------------
 
