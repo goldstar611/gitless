@@ -6,7 +6,7 @@
 
 
 from ..import core
-from . import helpers, pprint
+from . import pprint
 
 def parser(subparsers, _):
     """Adds the format-patch parser to the given subparsers object."""
