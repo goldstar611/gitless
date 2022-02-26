@@ -26,3 +26,4 @@ def main(args, repo):
         pprint.ok('Fetching from upstream succeeded')
     else:
         pprint.err('Fetching from upstream failed')
+    return p.returncode == 0

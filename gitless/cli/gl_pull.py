@@ -26,3 +26,4 @@ def main(args, repo):
         pprint.ok('Pulling from your mirror succeeded')
     else:
         pprint.err('Pulling from your mirror failed')
+    return p.returncode == 0
