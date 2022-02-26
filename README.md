@@ -39,10 +39,11 @@ http://www.pygit2.org/install.html "pygit2 install").
 If you are using [Arch Linux](https://www.archlinux.org/) or any of
 its derivatives, you can use your favorite
 [AUR Helper](https://wiki.archlinux.org/index.php/AUR_helpers) and install:
-- [gitless](https://aur.archlinux.org/packages/gitless/) for the latest
-  [tagged release](https://github.com/goldstar611/gitless/tags).
-- [gitless-git](https://aur.archlinux.org/packages/gitless-git/) for the latest 
-  changes in the default branch (master currently).
+
+| **Version** | **Maintainer** | **Package**  |
+| :--------- | :------------- | :----------- |
+| [tagged release](https://github.com/goldstar611/gitless/tags) | Piotr Górski   | [gitless](https://aur.archlinux.org/packages/gitless) <sup>AUR</sup> |
+| the latest changes in the default branch (master currently)  | Maor Kadosh  | [gitless-git](https://aur.archlinux.org/packages/gitless-git) <sup>AUR</sup> |
 
 ### Installing via Snapcraft (Linux only)
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gitless-snap)
