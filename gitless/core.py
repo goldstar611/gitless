@@ -555,7 +555,7 @@ class Remote(object):
         # We can't create a tag in a remote without creating a local one first. So
         # we create a temporary local ref, make it point to the commit, and do the
         # push
-        tmp_t = self.gl_repo.create_tag('gl_tmp_ref', commit)
+        tmp_t = self.gl_repo.create_tag(name, commit)
         try:
             git('push', self.name, 'refs/tags/{0}:refs/tags/{1}'.format(tmp_t, name))
             return self.lookup_tag(name)
