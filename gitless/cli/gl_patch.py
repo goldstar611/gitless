@@ -22,4 +22,4 @@ def parser(subparsers, _):
 def main(args, repo):
     core.git_wrap('format-patch', *args.patch_args)
     pprint.ok('Patch created successful')
-    return True
+    return p.returncode == 0
