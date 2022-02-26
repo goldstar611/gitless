@@ -805,7 +805,7 @@ class TestFetch(TestWithRemote):
 
     def test_fetch_bad_branch(self):
         self.assertRaisesRegexp(
-            CalledProcessError, 'Couldn\'t find remote ref',
+            CalledProcessError, '[Cc]ouldn\'t find remote ref',
             utils.gl, 'fetch', 'origin', 'badbranch')
 
 # TODO: Check why argparse doesn't grab the --bad-option argument
@@ -830,7 +830,7 @@ class TestPull(TestWithRemote):
 
     def test_pull_bad_branch(self):
         self.assertRaisesRegexp(
-            CalledProcessError, 'Couldn\'t find remote ref',
+            CalledProcessError, '[Cc]ouldn\'t find remote ref',
             utils.gl, 'pull', 'origin', 'badbranch')
 
 # TODO: Check why argparse doesn't grab the --bad-option argument
