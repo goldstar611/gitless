@@ -12,9 +12,6 @@ base: core20
 grade: stable
 confinement: strict
 
-architectures:
-  - build-on: amd64
-
 environment:
   GIT_EXEC_PATH: $SNAP/usr/lib/git-core
   GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
