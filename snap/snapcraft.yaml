@@ -53,5 +53,6 @@ parts:
     source: https://github.com/goldstar611/gitless.git
     build-packages:
       - libffi-dev
+      - libgit2-dev
     stage-packages:
       - git
