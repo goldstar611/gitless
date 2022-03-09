@@ -54,8 +54,8 @@ parts:
     build-packages:
       -  libssl-dev
     prime:
-      - -usr/local/include
-      - -usr/local/lib
+      - usr/local/include
+      - usr/local/lib
   gitless-cli:
     after: 
       - libgit2
