@@ -2,7 +2,7 @@
 # Gitless - a version control system built on top of Git
 # Licensed under MIT
 
-"""gl revert - A wrapper around git-revert1)."""
+"""gl revert - A wrapper around git-revert(1)."""
 
 
 from ..import core
