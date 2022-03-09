@@ -51,5 +51,7 @@ parts:
   gitless-cli:
     plugin: python
     source: https://github.com/goldstar611/gitless.git
+    build-packages:
+      - libffi-dev
     stage-packages:
       - git
