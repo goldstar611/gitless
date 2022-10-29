@@ -7,9 +7,10 @@ description: |
   a friendly command-line interface. Because Gitless is implemented on top of
   Git, you can always fall back on Git
 
-#architectures:
+architectures:
 #  - amd64
 #  - arm64
+  - s390x
 
 base: core20
 grade: stable
@@ -54,11 +55,14 @@ parts:
   libgit2:
     source: https://github.com/libgit2/libgit2/archive/refs/tags/v1.5.0.tar.gz
     plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=RELEASE
+      - -DCMAKE_INSTALL_PREFIX=/usr/local/lib
     build-packages:
       -  libssl-dev
-    #prime:
-    #  - usr/local/include
-    #  - usr/local/lib
+    prime:
+      - usr/local/include
+      - usr/local/lib
   gitless-cli:
     after: 
       - libgit2
