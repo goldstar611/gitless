@@ -8,9 +8,7 @@ description: |
   Git, you can always fall back on Git
 
 architectures:
-#  - amd64
-#  - arm64
-  - s390x
+#  - s390x
 
 base: core20
 grade: stable
@@ -68,8 +66,8 @@ parts:
     plugin: python
     source: https://github.com/goldstar611/gitless.git
     build-environment:
-    - CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
-    - LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
+      - CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
+      - LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
     build-packages:
       - libffi-dev
     stage-packages:
