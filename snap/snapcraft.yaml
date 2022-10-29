@@ -56,9 +56,9 @@ parts:
     plugin: cmake
     build-packages:
       -  libssl-dev
-    prime:
-      - usr/local/include
-      - usr/local/lib
+    #prime:
+    #  - usr/local/include
+    #  - usr/local/lib
   gitless-cli:
     after: 
       - libgit2
