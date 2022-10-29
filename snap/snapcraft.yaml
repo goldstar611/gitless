@@ -64,7 +64,7 @@ parts:
     after: 
       - libgit2
     plugin: python
-    source: https://github.com/goldstar611/gitless.git
+    source: .
     build-environment:
       - CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
       - LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
