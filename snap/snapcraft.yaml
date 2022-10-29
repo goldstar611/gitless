@@ -57,7 +57,7 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RELEASE
-      - -DCMAKE_INSTALL_PREFIX=/usr/local/lib
+    install: DESTDIR=/ cmake --build . --target install
     build-packages:
       -  libssl-dev
     prime:
