@@ -57,14 +57,14 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RELEASE
+    override-build: |
+      DESTDIR=/ cmake --build . --target install
     build-packages:
       -  libssl-dev
     prime:
       - usr/local/include
       - usr/local/lib
   gitless-cli:
-    stage:
-      - libgit2
     after: 
       - libgit2
     plugin: python
