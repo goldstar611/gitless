@@ -51,12 +51,20 @@ apps:
       - removable-media
   
 parts:
+  libgit2:
+    source: https://github.com/libgit2/libgit2/archive/refs/tags/v1.5.0.tar.gz
+    plugin: cmake
+    build-packages:
+      -  libssl-dev
+    prime:
+      - usr/local/include
+      - usr/local/lib
   gitless-cli:
+    after: 
+      - libgit2
     plugin: python
     source: https://github.com/goldstar611/gitless.git
     build-packages:
       - libffi-dev
-      - libgit2-dev
     stage-packages:
       - git
-      - libgit2-28
