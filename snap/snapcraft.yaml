@@ -67,9 +67,9 @@ parts:
       - libgit2
     plugin: python
     source: https://github.com/goldstar611/gitless.git
-    override-build: |
-      env
-      snapcraftctl build
+    build-environment:
+    - CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
+    - LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
     build-packages:
       - libffi-dev
     stage-packages:
