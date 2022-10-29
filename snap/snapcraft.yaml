@@ -7,7 +7,7 @@ description: |
   a friendly command-line interface. Because Gitless is implemented on top of
   Git, you can always fall back on Git
 
-architectures:
+#architectures:
 #  - s390x
 
 base: core20
