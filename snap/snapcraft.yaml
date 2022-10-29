@@ -57,9 +57,6 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RELEASE
-    override-build: |
-      env
-      snapcraft build
     build-packages:
       -  libssl-dev
     prime:
@@ -70,6 +67,9 @@ parts:
       - libgit2
     plugin: python
     source: https://github.com/goldstar611/gitless.git
+    override-build: |
+      env
+      snapcraftctl build
     build-packages:
       - libffi-dev
     stage-packages:
