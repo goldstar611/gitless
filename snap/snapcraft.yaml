@@ -58,7 +58,8 @@ parts:
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RELEASE
     override-build: |
-      DESTDIR=/ cmake --build . --target install
+      env
+      snapcraft build
     build-packages:
       -  libssl-dev
     prime:
