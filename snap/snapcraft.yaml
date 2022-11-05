@@ -61,13 +61,17 @@ parts:
       - usr/local/include
       - usr/local/lib
   gitless-cli:
-    after: 
+    stage: 
       - libgit2
     plugin: python
     source: .
     build-environment:
-      - CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
-      - LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
+      - C_INCLUDE_PATH: $SNAPCRAFT_STAGE/usr/local/include
+      #- CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
+      #- LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
+    override-build: |
+      find $SNAPCRAFT_STAGE/usr/local/include
+      snapcraftctl build
     build-packages:
       - libffi-dev
     stage-packages:
