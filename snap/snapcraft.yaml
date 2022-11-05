@@ -61,6 +61,8 @@ parts:
       - usr/local/include
       - usr/local/lib
   gitless-cli:
+    after: 
+      - libgit2
     stage: 
       - libgit2
     plugin: python
