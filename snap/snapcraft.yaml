@@ -7,8 +7,8 @@ description: |
   a friendly command-line interface. Because Gitless is implemented on top of
   Git, you can always fall back on Git
 
-#architectures:
-#  - s390x
+architectures:
+  - s390x
 
 base: core20
 grade: stable
@@ -62,16 +62,14 @@ parts:
       - usr/local/lib/*
     prime:
       - usr/local/include
-      - usr/local/lib
   gitless-cli:
     after: 
       - libgit2
     plugin: python
     source: .
     build-environment:
-      - C_INCLUDE_PATH: $SNAPCRAFT_STAGE/usr/local/include
-      #- CFLAGS: "$CFLAGS -I/build/gitless-snap/parts/libgit2/install/usr/local/include"
-      #- LDFLAGS: "$LDFLAGS -L/build/gitless-snap/parts/libgit2/install/usr/local/lib"
+      - CFLAGS: "$CFLAGS -I$SNAPCRAFT_STAGE/usr/local/include"
+      - LDFLAGS: "$LDFLAGS -L$SNAPCRAFT_STAGE/usr/local/lib"
     override-build: |
       find $SNAPCRAFT_STAGE/usr/local/include
       snapcraftctl build
