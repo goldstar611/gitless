@@ -57,13 +57,14 @@ parts:
       - -DCMAKE_BUILD_TYPE=RELEASE
     build-packages:
       -  libssl-dev
+    stage: 
+      - usr/local/include/*
+      - usr/local/lib/*
     prime:
       - usr/local/include
       - usr/local/lib
   gitless-cli:
     after: 
-      - libgit2
-    stage: 
       - libgit2
     plugin: python
     source: .
