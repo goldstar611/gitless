@@ -56,7 +56,7 @@ parts:
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=RELEASE
       # Dont build tests
-      - -DBUILD_CLAR=OFF
+      - -DBUILD_TESTS=OFF
     build-packages:
       -  libssl-dev
     stage: 
